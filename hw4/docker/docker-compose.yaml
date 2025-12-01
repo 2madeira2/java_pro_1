@@ -9,5 +9,3 @@ services:
       POSTGRES_DB: my_db
       POSTGRES_USER: root
       POSTGRES_PASSWORD: root
-    volumes:
-      - ./init-scripts:/docker-entrypoint-initdb.d
