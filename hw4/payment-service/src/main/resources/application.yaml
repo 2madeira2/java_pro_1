@@ -2,3 +2,6 @@ server:
   port: 8082
 product-service:
   url: http://localhost:8081
+  timeout:
+    connect: 5
+    read: 10

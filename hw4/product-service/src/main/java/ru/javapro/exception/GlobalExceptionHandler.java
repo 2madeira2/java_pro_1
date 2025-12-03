@@ -10,16 +10,43 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler({ProductNotFoundException.class, UserNotFoundException.class})
-    public ResponseEntity<Map<String, String>> handleNotFound(EntityNotFoundException exception) {
+    @ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleProductNotFound(ProductNotFoundException ex) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(Map.of("error", exception.getMessage()));
+                .body(Map.of(
+                        "errorCode", "PRODUCT_NOT_FOUND",
+                        "message", ex.getMessage()
+                ));
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleUserNotFound(UserNotFoundException ex) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(Map.of(
+                        "errorCode", "USER_NOT_FOUND",
+                        "message", ex.getMessage()
+                ));
     }
 
     @ExceptionHandler(InsufficientFundsException.class)
     public ResponseEntity<Map<String, String>> handleInsufficientFunds(InsufficientFundsException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(Map.of("error", ex.getMessage()));
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(Map.of(
+                        "errorCode", "INSUFFICIENT_FUNDS",
+                        "message", ex.getMessage()
+                ));
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<Map<String, String>> handleGenericError(Exception ex) {
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of(
+                        "errorCode", "INTERNAL_ERROR",
+                        "message", "Внутренняя ошибка сервера: " + ex.getMessage()
+                ));
     }
 }
